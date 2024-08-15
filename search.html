@@ -1,0 +1,43 @@
+<html lang="ar">
+  <head>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+   <script>
+     $(document).ready(function(){
+ $.ajaxSetup({ cache: false });
+ $('#search').keyup(function(){
+  $('#result').html('');
+  $('#state').val('');
+  var searchField = $('#search').val();
+  var expression = new RegExp(searchField, "i");
+  $.getJSON('data.json', function(data) {
+   $.each(data, function(key, value){
+    if (value.name.search(expression) != -1 || value.location.search(expression) != -1)
+    {
+     $('#result').append('<h4 class="list-group-item link-class">' +value.name+ '</h4>');
+    }
+   });   
+  });
+ });
+ 
+ $('#result').on('click', 'li', function() {
+  var click_text = $(this).text().split('|');
+  $('#search').val($.trim(click_text[0]));
+  $("#result").html('');
+ });
+});
+   </script>
+   <meta charset="UTF-8">
+  </head>
+  <body>
+    <div class="container" style="width:200px;">
+   <br /><br />
+   <div align="center">
+    <input type="search" name="search" id="search" placeholder="Search Employee Detai" class="form-control"/>
+   </div>
+   <ul class="list-group" id="result"></ul>
+   <br/>
+  </div>
+  </body>
+</html>
